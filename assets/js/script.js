@@ -1,16 +1,20 @@
-var startButton = document.getElementById('start-btn')
-var nextButton = document.getElementById('next-btn')
-var questionContainerElement = document.getElementById('question-container')
-var questionElement = document.getElementById('question')
-var answerButtonsElement = document.getElementById('answer-buttons')
+var startButton = document.getElementById('start-btn');
+var nextButton = document.getElementById('next-btn');
+var questionContainerElement = document.getElementById('question-container');
+var questionElement = document.getElementById('question');
+var answerButtonsElement = document.getElementById('answer-buttons');
+var timerId;
+var timerEl = document.getElementById('time');
+var submitButton = document.getElementById('submit');
+var initials = document.getElementById('initials')
 
-let shuffledQuestions, currentQuestionIndex
+let shuffledQuestions, currentQuestionIndex;
 
-startButton.addEventListener('click', startGame)
+startButton.addEventListener('click', startGame);
 nextButton.addEventListener('click', () => {
     currentQuestionIndex++
     setNextQuestion()
-})
+});
 
 function startGame() {
     startButton.classList.add('hide')
@@ -18,12 +22,12 @@ function startGame() {
     currentQuestionIndex = 0
     questionContainerElement.classList.remove('hide')
     setNextQuestion()
-}
+};
 
 function setNextQuestion() {
     resetState()
     showQuestion(shuffledQuestions[currentQuestionIndex])
-}
+};
 
 function showQuestion(question) {
     questionElement.innerText = question.question
@@ -37,15 +41,30 @@ function showQuestion(question) {
         button.addEventListener('click', selectAnswer)
         answerButtonsElement.appendChild(button)
     })
+};
 
-}
+var timeLeft = 30;
+    var timerEl = document.getElementById('time');
+    timerId = setInterval(countdown, 1000);
+
+    function countdown() {
+        if (timeLeft == 0) {
+            clearTimeout(timerId);
+            endScreen();
+        } else {
+            element.innerText = timeLeft + ' seconds remaining';
+            timeLeft--;
+        }
+    }
+
 function resetState() {
     clearStatusClass(document.body)
     nextButton.classList.add('hide')
     while (answerButtonsElement.firstChild) {
         answerButtonsElement.removeChild(answerButtonsElement.firstChild)
     }
-}
+};
+
 function selectAnswer(e) {
     var selectedButton = e.target
     var correct = selectedButton.dataset.correct
@@ -58,9 +77,8 @@ function selectAnswer(e) {
     } else {
         startButton.innerText = 'Restart'
         startButton.classList.remove('hide')
-    }
-    
-}
+    }    
+};
 
 function setStatusClass(element, correct) {
     clearStatusClass(element)
@@ -69,12 +87,12 @@ function setStatusClass(element, correct) {
     } else {
         element.classList.add('wrong')
     }
-}
+};
 
 function clearStatusClass(element) {
     element.classList.remove('correct')
     element.classList.remove('wrong')
-}
+};
 
 var questions = [
     {
@@ -128,7 +146,7 @@ var questions = [
             { text: '//This is a comment', correct: true },
             { text: '<!--This is a comment-->', correct: false },
             { text: '**This is a comment', correct: false },
-            { text: '(-This is a comment-)', correct: true }
+            { text: '(-This is a comment-)', correct: false }
         ]
     },
     {
@@ -163,4 +181,39 @@ var questions = [
             { text: 'False', correct: true },
         ]
     }
-]
+];
+
+function Endquiz() {
+    clearInterval(timerId);
+    var endScreen = document.getElementById('end-screen');
+    endScreen.removeAttribute('class');
+
+    var finalScore = document.getElementById('final-score');
+    finalScore.textContent = time;
+
+    questionElement.setAttribute('class', 'hide');
+}
+
+function clock() {
+    time--;
+    timerEl.textContent = time;
+
+    if (time <= 0) {
+        quizEnd();
+    }
+}
+
+function saveHighScore() {
+    var initials = initials.value;
+    var highScores = JSON.parse(localStorage.getItem("highScores")) || [];
+
+    var newScore = {
+        score: time,
+        initials: initials
+    };
+
+    highScores.push(score);
+    window.localStorage.setItem("highscores", JSON.stringify(highscores));
+}
+
+submitButton.onclick = saveHighScore;

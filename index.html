@@ -9,6 +9,11 @@
     <title>Timed Quiz</title>
 </head>
 <body>
+    <header>
+        <div class="timer">Time:</div>
+        <div class="score">Score</div>
+        </div>
+    </header>
     <div class="container">
         <div id="question-container" class="hide">
             <div id="question">Question</div>
@@ -23,6 +28,13 @@
             <button id="start-btn" class="start-btn btn">Start</button>
             <button id="next-btn" class="next-btn btn hide">Next</button>
         </div>
+    </div>
+    <div id="end-screen" class="hide">
+        <h2>Quiz Complete</h2>
+        <p>Your final score is <span id="final-score"></span></p>
+        <p>Enter Initials: <input type="text" id="initials" />
+            <button id="submit">Submit</button>
+        </p>
     </div>
 </body>
 </html>

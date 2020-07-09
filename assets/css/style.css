@@ -10,6 +10,10 @@
     --correct: rgb(0, 128, 0);
 }
 
+header {
+    color: white;
+}
+
 body {
     padding: 0;
     margin: 0;
